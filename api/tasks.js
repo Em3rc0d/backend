@@ -1,10 +1,23 @@
-// routes/tasks.js
-const express = require('express');
-const Task = require('../models/Task');
-const router = express.Router();
+const dotenv = require('dotenv');
+dotenv.config();
 
-// Crear nueva tarea
-router.post('/', async (req, res) => {
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const Task = require('../models/Task'); // Asegúrate de que la ruta sea correcta
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://farid:emerc0d@cluster0.sguno.mongodb.net/taskManager?retryWrites=true&w=majority&appName=Cluster0';
+
+mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('Conectado a MongoDB'))
+    .catch(err => console.error('Error de conexión a MongoDB:', err));
+
+// Rutas
+app.post('/', async (req, res) => {
     try {
         const newTask = new Task({ ...req.body });
         await newTask.save();
@@ -15,8 +28,7 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Obtener tareas por userId
-router.get('/:userId', async (req, res) => {
+app.get('/:userId', async (req, res) => {
     try {
         const tasks = await Task.find({ userId: req.params.userId });
         res.send(tasks);
@@ -26,8 +38,7 @@ router.get('/:userId', async (req, res) => {
     }
 });
 
-// Actualizar tarea
-router.put('/:id', async (req, res) => {
+app.put('/:id', async (req, res) => {
     try {
         const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!updatedTask) {
@@ -40,8 +51,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// Eliminar tarea
-router.delete('/:id', async (req, res) => {
+app.delete('/:id', async (req, res) => {
     try {
         const deletedTask = await Task.findByIdAndDelete(req.params.id);
         if (!deletedTask) {
@@ -54,4 +64,4 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = app; // Exporta la app para que Vercel pueda usarla
