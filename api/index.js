@@ -6,7 +6,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: 'https://backend-gbtc.vercel.app' // Reemplaza con tu URL de frontend
+}));
 app.use(express.json());
 
 const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://farid:emerc0d@cluster0.sguno.mongodb.net/taskManager?retryWrites=true&w=majority&appName=Cluster0';
