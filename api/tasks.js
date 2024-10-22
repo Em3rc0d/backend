@@ -4,7 +4,7 @@ dotenv.config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const Task = require('../models/Task'); // Asegúrate de que la ruta sea correcta
+const Task = require('./Task'); // Asegúrate de que la ruta sea correcta
 
 const app = express();
 app.use(cors());
