@@ -64,4 +64,7 @@ app.delete('/:id', async (req, res) => {
     }
 });
 
-module.exports = app; // Exporta la app para que Vercel pueda usarla
+// Exporta la función para que Vercel pueda usarla
+module.exports = (req, res) => {
+    app(req, res);
+};
