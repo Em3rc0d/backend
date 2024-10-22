@@ -16,7 +16,7 @@ mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
     .catch(err => console.error('Error de conexión a MongoDB:', err));
 
 // Importar las rutas
-const tasksRoute = require('./tasks');
+const tasksRoute = require('./api/tasks');
 app.use('/tasks', tasksRoute);
 
 // Middleware para manejar errores
